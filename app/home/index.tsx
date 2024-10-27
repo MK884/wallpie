@@ -32,7 +32,7 @@ const Home = () => {
     fetchImages();
   }, []);
 
-  const fetchImages = async (params = { page: 1 }, append = true) => {
+  const fetchImages = async (params = { page: 1 }, append = false) => {
     const data = await getImages(params);
 
     if (data?.hits) {
@@ -94,7 +94,7 @@ const Home = () => {
         </View>
 
         {/* images  */}
-        {images.length && <ImageGrid images={images} />}
+        {images.length > 0 && <ImageGrid images={images} />}
       </ScrollView>
     </View>
   );
