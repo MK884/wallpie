@@ -1,29 +1,22 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  StatusBar,
-  Image,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import { hp, wp } from "@/helpers";
-import { LinearGradient } from "expo-linear-gradient";
-import Animated, { FadeInDown } from "react-native-reanimated";
 import { theme } from "@/constants";
+import { StatusBar } from "expo-status-bar";
+import Animated, { FadeInDown } from "react-native-reanimated";
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 
 const index = () => {
   const router = useRouter();
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar style="light" />
       <Image
         source={require("@/assets/images/welcome.png")}
         style={styles.bgImage}
         resizeMode="cover"
       />
-      {/* linear gradient */}
       <Animated.View entering={FadeInDown.duration(600)} style={{ flex: 1 }}>
         <LinearGradient
           colors={[
@@ -36,26 +29,27 @@ const index = () => {
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 0.8 }}
         />
-        {/* content */}
         <View style={styles.contentContainer}>
           <Animated.Text
-            entering={FadeInDown.delay(400).springify()}
             style={styles.title}
+            entering={FadeInDown.duration(400).springify()}
           >
-            WellPie
+            WallPie
           </Animated.Text>
           <Animated.Text
-            entering={FadeInDown.delay(500).springify()}
             style={styles.punchLine}
+            entering={FadeInDown.duration(500).springify()}
           >
             Make a good choice with WallPie
           </Animated.Text>
-          <Animated.View entering={FadeInDown.delay(600).springify()}>
+          <Animated.View entering={FadeInDown.duration(600).springify()}>
             <Pressable
-              onPress={() => router.push("/home")}
               style={styles.startBtn}
+              onPress={() => router.push("/home")}
             >
-              <Text style={styles.startTitle}>Start Explore</Text>
+              <Animated.Text style={styles.startText}>
+                Start Explore
+              </Animated.Text>
             </Pressable>
           </Animated.View>
         </View>
@@ -104,11 +98,11 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.xl,
     borderCurve: "continuous",
   },
-  startTitle: {
+  startText: {
     color: "white",
-    fontSize: hp(3),
-    fontWeight: 500,
     letterSpacing: 1,
+    fontSize: hp(2),
+    fontWeight: 500,
   },
 });
 
