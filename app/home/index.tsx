@@ -14,6 +14,7 @@ import { hp, wp } from "@/helpers";
 import { Categories, ImageGrid } from "@/components";
 import { getImages } from "@/service";
 
+var page = 1;
 const Home = () => {
   const { top } = useSafeAreaInsets();
   const paddingTop = top > 0 ? top + 10 : 30;
@@ -26,13 +27,21 @@ const Home = () => {
 
   const handleCategory = (cat: string | null) => {
     setActiveCategory(cat);
+    queryRef.current?.clear();
+    page = 1;
+    const params: { [key: string]: any } = {
+      page,
+    };
+
+    if (cat) params.category = cat;
+    fetchImages(params);
   };
 
   React.useEffect(() => {
     fetchImages();
   }, []);
 
-  const fetchImages = async (params = { page: 1 }, append = false) => {
+  const fetchImages = async (params: unknown = { page: 1 }, append = false) => {
     const data = await getImages(params);
 
     if (data?.hits) {
@@ -42,6 +51,36 @@ const Home = () => {
         setImages(data.hits);
       }
     }
+  };
+
+  const handleSearch = (text: string) => {
+    if (text?.length > 2) {
+      // make search query
+      page = 1;
+      setImages([]);
+      setActiveCategory(null);
+      fetchImages({ page, q: text });
+    }
+
+    if (text === "") {
+      // reset images
+      page = 1;
+      setImages([]);
+      setActiveCategory(null);
+      fetchImages({ page });
+    }
+  };
+
+  React.useEffect(() => {
+    const timerId = setTimeout(() => {
+      handleSearch(query);
+    }, 400);
+
+    return () => clearTimeout(timerId);
+  }, [query]);
+
+  const clearSerach = () => {
+    setQuery("");
   };
 
   return (
@@ -75,7 +114,7 @@ const Home = () => {
             ref={queryRef}
           />
           {query && (
-            <Pressable style={styles.closeIcon}>
+            <Pressable style={styles.closeIcon} onPress={clearSerach}>
               <Ionicons
                 name="close"
                 size={24}
