@@ -6,6 +6,8 @@ import {
   ScrollView,
   TextInput,
   ActivityIndicator,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -21,6 +23,7 @@ const Home = () => {
   const { top } = useSafeAreaInsets();
   const paddingTop = top > 0 ? top + 10 : 30;
   const [query, setQuery] = React.useState<string>("");
+  const [isCloseToEnd, setIsCloseToEnd] = React.useState<boolean>(false);
   const [filters, setFilters] = React.useState<Object | null>(null);
   const [images, setImages] = React.useState<Array<IPixabay>>([]);
   const [ActiveCategory, setActiveCategory] = React.useState<string | null>(
@@ -28,6 +31,7 @@ const Home = () => {
   );
   const queryRef = React.useRef<TextInput>(null);
   const modalSheetRef = React.useRef<BottomSheetModal>(null);
+  const scrollRef = React.useRef<ScrollView>(null);
 
   const handleCategory = (cat: string | null) => {
     setActiveCategory(cat);
@@ -139,11 +143,38 @@ const Home = () => {
     fetchImages(params);
   };
 
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const contentHeight = e.nativeEvent.contentSize.height;
+    const scrollViewHeight = e.nativeEvent.layoutMeasurement.height;
+    const scrollOffset = e.nativeEvent.contentOffset.y;
+    const bottomPosition = contentHeight - scrollViewHeight;
+
+    if (scrollOffset >= bottomPosition - 10) {
+      if (!isCloseToEnd) {
+        setIsCloseToEnd(true);
+        ++page;
+        let params: { [key: string]: any } = {
+          page,
+          ...filters,
+        };
+        if (ActiveCategory) params.category = ActiveCategory;
+        if (query) params.q = query;
+        fetchImages(params, true);
+      }
+    } else if (isCloseToEnd) {
+      setIsCloseToEnd(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    scrollRef?.current?.scrollTo({ y: 0, animated: true });
+  };
+
   return (
     <View style={[styles.container, { paddingTop }]}>
       {/* header */}
       <View style={styles.header}>
-        <Pressable>
+        <Pressable onPress={scrollToTop}>
           <Text style={[styles.title, { fontWeight: 600 }]}>WallPie</Text>
         </Pressable>
         <Pressable onPress={openFilterModal}>
@@ -154,7 +185,12 @@ const Home = () => {
           />
         </Pressable>
       </View>
-      <ScrollView contentContainerStyle={{ gap: 15 }}>
+      <ScrollView
+        onScroll={handleScroll}
+        ref={scrollRef}
+        scrollEventThrottle={5}
+        contentContainerStyle={{ gap: 15 }}
+      >
         {/* search bar*/}
         <View style={styles.sreachBar}>
           <View style={styles.serachIcon}>
