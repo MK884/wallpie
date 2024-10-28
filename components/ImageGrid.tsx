@@ -3,8 +3,15 @@ import React from "react";
 import { MasonryFlashList } from "@shopify/flash-list";
 import ImageCard from "./ImageCard";
 import { getColumsNum, wp } from "@/helpers";
+import { Router } from "expo-router";
 
-const ImageGrid = ({ images }: { images: Array<IPixabay> }) => {
+const ImageGrid = ({
+  images,
+  router,
+}: {
+  images: Array<IPixabay>;
+  router: Router;
+}) => {
   const columns = getColumsNum();
 
   return (
@@ -13,7 +20,12 @@ const ImageGrid = ({ images }: { images: Array<IPixabay> }) => {
         data={images}
         numColumns={columns}
         renderItem={({ item, index }) => (
-          <ImageCard item={item} index={index} columns={columns} />
+          <ImageCard
+            item={item}
+            index={index}
+            columns={columns}
+            router={router}
+          />
         )}
         estimatedItemSize={200}
         keyExtractor={(item) => item.id.toString()}

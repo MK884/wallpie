@@ -20,6 +20,14 @@ const RooteLayout = () => {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name="home/ImageScreen"
+            options={{
+              headerShown: false,
+              presentation: "transparentModal",
+              animation: "fade",
+            }}
+          />
         </Stack>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

@@ -17,6 +17,7 @@ import { hp, wp } from "@/helpers";
 import { Categories, ImageGrid, ModalSheet } from "@/components";
 import { getImages } from "@/service";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useRouter } from "expo-router";
 
 var page = 1;
 const Home = () => {
@@ -32,6 +33,7 @@ const Home = () => {
   const queryRef = React.useRef<TextInput>(null);
   const modalSheetRef = React.useRef<BottomSheetModal>(null);
   const scrollRef = React.useRef<ScrollView>(null);
+  const router = useRouter();
 
   const handleCategory = (cat: string | null) => {
     setActiveCategory(cat);
@@ -267,7 +269,9 @@ const Home = () => {
         )}
 
         {/* images  */}
-        <View>{images.length > 0 && <ImageGrid images={images} />}</View>
+        <View>
+          {images.length > 0 && <ImageGrid images={images} router={router} />}
+        </View>
 
         {/* laoder */}
         <View

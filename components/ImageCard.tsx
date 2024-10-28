@@ -3,15 +3,18 @@ import React from "react";
 import { Image } from "expo-image";
 import { getImageSize, wp } from "@/helpers";
 import { theme } from "@/constants";
+import { Router } from "expo-router";
 
 const ImageCard = ({
   item,
   index,
   columns,
+  router,
 }: {
   item: IPixabay;
   index: number;
   columns: number;
+  router: Router;
 }) => {
   const getSize = () => {
     const { imageWidth: width, imageHeight: height } = item;
@@ -26,7 +29,12 @@ const ImageCard = ({
   };
 
   return (
-    <Pressable style={[styles.wrapper, !isLastColumn() && styles.spacing]}>
+    <Pressable
+      style={[styles.wrapper, !isLastColumn() && styles.spacing]}
+      onPress={() =>
+        router.push({ pathname: "/home/ImageScreen", params: { ...item } })
+      }
+    >
       <Image
         style={[styles.image, getSize()]}
         source={{
