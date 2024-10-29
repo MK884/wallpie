@@ -6,7 +6,8 @@ const formateURL = (params: unknown) => {
   if (!apiUrl) {
     throw new Error("mismatch uri");
   }
-  let uri = apiUrl + "&per_page=25&safesearch=true&editors_choice=true";
+  // let uri = apiUrl + "&per_page=25&safesearch=true&editors_choice=true";
+  let uri = apiUrl + "&per_page=25&safesearch=true";
 
   if (!params) return uri;
 

@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Platform,
 } from "react-native";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -17,7 +18,7 @@ import { hp, wp } from "@/helpers";
 import { Categories, ImageGrid, ModalSheet } from "@/components";
 import { getImages } from "@/service";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 var page = 1;
 const Home = () => {
@@ -180,6 +181,8 @@ const Home = () => {
     scrollRef?.current?.scrollTo({ y: 0, animated: true });
   };
 
+  const isWeb = Platform.OS === "web";
+
   return (
     <>
       <View style={[styles.container, { paddingTop }]}>
@@ -188,6 +191,28 @@ const Home = () => {
           <Pressable onPress={scrollToTop}>
             <Text style={[styles.title, { fontWeight: 600 }]}>WallPie</Text>
           </Pressable>
+          {isWeb && (
+            <View style={styles.socialIcons}>
+              <Link href="https://github.com/MK884" target="_blank">
+                <Pressable>
+                  <FontAwesome6
+                    name="github"
+                    size={24}
+                    color={theme.colors.neutral(0.7)}
+                  />
+                </Pressable>
+              </Link>
+              <Link
+                href="https://www.linkedin.com/in/merchant-khalid/"
+                target="_blank"
+              >
+                <Pressable>
+                  <FontAwesome6 name="linkedin" size={24} color="#0a66c2" />
+                </Pressable>
+              </Link>
+            </View>
+          )}
+
           <Pressable onPress={openFilterModal}>
             <FontAwesome6
               name="bars-staggered"
@@ -392,8 +417,14 @@ const styles = StyleSheet.create({
   noImagesText: {
     color: theme.colors.neutral(0.5),
     fontWeight: "700",
-    fontSize: wp(1.8),
+    fontSize: hp(1.8),
     textTransform: "capitalize",
+  },
+  socialIcons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    gap: 10,
   },
 });
 
