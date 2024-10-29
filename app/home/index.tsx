@@ -25,6 +25,7 @@ const Home = () => {
   const paddingTop = top > 0 ? top + 10 : 30;
   const [query, setQuery] = React.useState<string>("");
   const [isCloseToEnd, setIsCloseToEnd] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [filters, setFilters] = React.useState<Object | null>(null);
   const [images, setImages] = React.useState<Array<IPixabay>>([]);
   const [ActiveCategory, setActiveCategory] = React.useState<string | null>(
@@ -53,14 +54,21 @@ const Home = () => {
   }, []);
 
   const fetchImages = async (params: unknown = { page: 1 }, append = false) => {
-    const data = await getImages(params);
+    setIsLoading(true);
+    try {
+      const data = await getImages(params);
 
-    if (data?.hits) {
-      if (append) {
-        setImages((prev) => [...prev, ...data.hits]);
-      } else {
-        setImages(data.hits);
+      if (data?.hits) {
+        if (append) {
+          setImages((prev) => [...prev, ...data.hits]);
+        } else {
+          setImages(data.hits);
+        }
       }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -173,124 +181,141 @@ const Home = () => {
   };
 
   return (
-    <View style={[styles.container, { paddingTop }]}>
-      {/* header */}
-      <View style={styles.header}>
-        <Pressable onPress={scrollToTop}>
-          <Text style={[styles.title, { fontWeight: 600 }]}>WallPie</Text>
-        </Pressable>
-        <Pressable onPress={openFilterModal}>
-          <FontAwesome6
-            name="bars-staggered"
-            size={22}
-            color={theme.colors.neutral(0.7)}
-          />
-        </Pressable>
-      </View>
-      <ScrollView
-        onScroll={handleScroll}
-        ref={scrollRef}
-        scrollEventThrottle={5}
-        contentContainerStyle={{ gap: 15 }}
-      >
-        {/* search bar*/}
-        <View style={styles.sreachBar}>
-          <View style={styles.serachIcon}>
-            <Feather
-              name="search"
-              size={24}
-              color={theme.colors.neutral(0.4)}
+    <>
+      <View style={[styles.container, { paddingTop }]}>
+        {/* header */}
+        <View style={styles.header}>
+          <Pressable onPress={scrollToTop}>
+            <Text style={[styles.title, { fontWeight: 600 }]}>WallPie</Text>
+          </Pressable>
+          <Pressable onPress={openFilterModal}>
+            <FontAwesome6
+              name="bars-staggered"
+              size={22}
+              color={theme.colors.neutral(0.7)}
+            />
+          </Pressable>
+        </View>
+        <ScrollView
+          onScroll={handleScroll}
+          ref={scrollRef}
+          scrollEventThrottle={5}
+          contentContainerStyle={{ gap: 15 }}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* search bar*/}
+          <View style={styles.sreachBar}>
+            <View style={styles.serachIcon}>
+              <Feather
+                name="search"
+                size={24}
+                color={theme.colors.neutral(0.4)}
+              />
+            </View>
+            <TextInput
+              placeholder="Search for photos..."
+              // @ts-ignore
+              style={[styles.searchInput, { outlineStyle: "none" }]} //for web browsers
+              value={query}
+              onChangeText={(text) => setQuery(text)}
+              ref={queryRef}
+            />
+            {query && (
+              <Pressable style={styles.closeIcon} onPress={clearSerach}>
+                <Ionicons
+                  name="close"
+                  size={24}
+                  color={theme.colors.neutral(0.6)}
+                />
+              </Pressable>
+            )}
+          </View>
+
+          {/* categories */}
+          <View style={styles.categories}>
+            <Categories
+              activeCategory={ActiveCategory}
+              handleCategory={handleCategory}
             />
           </View>
-          <TextInput
-            placeholder="Search for photos..."
-            style={styles.searchInput}
-            value={query}
-            onChangeText={(text) => setQuery(text)}
-            ref={queryRef}
-          />
-          {query && (
-            <Pressable style={styles.closeIcon} onPress={clearSerach}>
-              <Ionicons
-                name="close"
-                size={24}
-                color={theme.colors.neutral(0.6)}
-              />
-            </Pressable>
+
+          {/* filters */}
+          {filters && (
+            <View>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.filters}
+              >
+                {Object.keys(filters).map((key, index) => (
+                  <View key={key} style={styles.filterItem}>
+                    {key == "colors" ? (
+                      <View
+                        style={{
+                          height: 20,
+                          width: 30,
+                          borderRadius: 7,
+                          // @ts-ignore
+                          backgroundColor: filters[key],
+                        }}
+                      />
+                    ) : (
+                      // @ts-ignore
+                      <Text style={styles.filterItemText}>{filters[key]}</Text>
+                    )}
+                    <Pressable
+                      style={styles.filterCloseIcon}
+                      onPress={() => clearFilter(key)}
+                    >
+                      <Ionicons
+                        name="close"
+                        size={14}
+                        color={theme.colors.neutral(0.9)}
+                      />
+                    </Pressable>
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
           )}
-        </View>
 
-        {/* categories */}
-        <View style={styles.categories}>
-          <Categories
-            activeCategory={ActiveCategory}
-            handleCategory={handleCategory}
-          />
-        </View>
-
-        {/* filters */}
-        {filters && (
+          {/* images  */}
           <View>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.filters}
-            >
-              {Object.keys(filters).map((key, index) => (
-                <View key={key} style={styles.filterItem}>
-                  {key == "colors" ? (
-                    <View
-                      style={{
-                        height: 20,
-                        width: 30,
-                        borderRadius: 7,
-                        // @ts-ignore
-                        backgroundColor: filters[key],
-                      }}
-                    />
-                  ) : (
-                    // @ts-ignore
-                    <Text style={styles.filterItemText}>{filters[key]}</Text>
-                  )}
-                  <Pressable
-                    style={styles.filterCloseIcon}
-                    onPress={() => clearFilter(key)}
-                  >
-                    <Ionicons
-                      name="close"
-                      size={14}
-                      color={theme.colors.neutral(0.9)}
-                    />
-                  </Pressable>
-                </View>
-              ))}
-            </ScrollView>
+            {images.length > 0 ? (
+              <ImageGrid images={images} router={router} />
+            ) : (
+              <View style={styles.noImages}>
+                <Text style={styles.noImagesText}>
+                  No Images Found! Try somthing else
+                </Text>
+              </View>
+            )}
           </View>
-        )}
 
-        {/* images  */}
-        <View>
-          {images.length > 0 && <ImageGrid images={images} router={router} />}
-        </View>
+          {/* laoder */}
+          {isLoading && (
+            <View
+              style={{
+                marginBottom: 70,
+                marginTop: images.length > 0 ? 10 : 70,
+              }}
+            >
+              <ActivityIndicator size={"large"} />
+            </View>
+          )}
+        </ScrollView>
 
-        {/* laoder */}
-        <View
-          style={{ marginBottom: 70, marginTop: images.length > 0 ? 10 : 70 }}
-        >
-          <ActivityIndicator size={"large"} />
-        </View>
-      </ScrollView>
-
-      {/* modal sheet */}
-      <ModalSheet
-        ref={modalSheetRef}
-        filters={filters}
-        setFilters={setFilters}
-        onApply={applyFilters}
-        onClose={closeFilterModal}
-        onReset={resetFilters}
-      />
-    </View>
+        {/* modal sheet */}
+        <ModalSheet
+          ref={modalSheetRef}
+          filters={filters}
+          setFilters={setFilters}
+          onApply={applyFilters}
+          onClose={closeFilterModal}
+          onReset={resetFilters}
+        />
+      </View>
+    </>
   );
 };
 
@@ -329,6 +354,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.sm,
     paddingVertical: 10,
     fontSize: hp(1.8),
+    borderWidth: 0,
   },
   closeIcon: {
     backgroundColor: theme.colors.neutral(0.1),
@@ -357,6 +383,17 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.neutral(0.2),
     padding: 4,
     borderRadius: 7,
+  },
+  noImages: {
+    height: hp(70),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noImagesText: {
+    color: theme.colors.neutral(0.5),
+    fontWeight: "700",
+    fontSize: wp(1.8),
+    textTransform: "capitalize",
   },
 });
 

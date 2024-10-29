@@ -1,4 +1,11 @@
-import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  Platform,
+} from "react-native";
 import React from "react";
 import { data, theme } from "@/constants";
 import { hp, wp } from "@/helpers";
@@ -13,9 +20,10 @@ const Categories = ({
 }) => {
   return (
     <FlatList
-      horizontal
-      contentContainerStyle={styles.flatList}
+      horizontal={true}
+      contentContainerStyle={[styles.flatList]}
       data={data.categories}
+      showsHorizontalScrollIndicator={Platform.OS === "web"}
       keyExtractor={(item) => item}
       renderItem={({ item, index }) => (
         <CategoryItem
@@ -45,19 +53,21 @@ const CategoryItem = ({
   const backgroundColor = isActive ? theme.colors.neutral(0.8) : "#fff";
 
   return (
-    <Animated.View
-      entering={FadeInRight.delay(index * 200)
-        .duration(1000)
-        .springify()
-        .damping(14)}
-    >
-      <Pressable
-        style={[styles.category, { backgroundColor }]}
-        onPress={() => onPress(isActive ? null : title)}
+    <>
+      <Animated.View
+        entering={FadeInRight.delay(index * 200)
+          .duration(1000)
+          .springify()
+          .damping(14)}
       >
-        <Text style={[styles.title, { color }]}>{title}</Text>
-      </Pressable>
-    </Animated.View>
+        <Pressable
+          style={[styles.category, { backgroundColor }]}
+          onPress={() => onPress(isActive ? null : title)}
+        >
+          <Text style={[styles.title, { color }]}>{title}</Text>
+        </Pressable>
+      </Animated.View>
+    </>
   );
 };
 

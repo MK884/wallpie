@@ -15,23 +15,25 @@ const ImageGrid = ({
   const columns = getColumsNum();
 
   return (
-    <View style={styles.container}>
-      <MasonryFlashList
-        data={images}
-        numColumns={columns}
-        renderItem={({ item, index }) => (
-          <ImageCard
-            item={item}
-            index={index}
-            columns={columns}
-            router={router}
-          />
-        )}
-        estimatedItemSize={200}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <MasonryFlashList
+          data={images}
+          numColumns={columns}
+          renderItem={({ item, index }) => (
+            <ImageCard
+              item={item}
+              index={index}
+              columns={columns}
+              router={router}
+            />
+          )}
+          estimatedItemSize={200}
+          keyExtractor={(item) => `${item.id}${item.user_id}`}
+          contentContainerStyle={styles.listContainer}
+        />
+      </View>
+    </>
   );
 };
 

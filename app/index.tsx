@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import { hp, wp } from "@/helpers";
 import { theme } from "@/constants";
@@ -10,51 +10,53 @@ import { useRouter } from "expo-router";
 const index = () => {
   const router = useRouter();
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" />
-      <Image
-        source={require("@/assets/images/welcome.png")}
-        style={styles.bgImage}
-        resizeMode="cover"
-      />
-      <Animated.View entering={FadeInDown.duration(600)} style={{ flex: 1 }}>
-        <LinearGradient
-          colors={[
-            "rgba(255, 255, 255, 0)",
-            "rgba(255, 255, 255, .5)",
-            "white",
-            "white",
-          ]}
-          style={styles.gradient}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 0.8 }}
+    <>
+      <View style={styles.container}>
+        <StatusBar style="light" />
+        <Image
+          source={require("@/assets/images/welcome.png")}
+          style={styles.bgImage}
+          resizeMode="cover"
         />
-        <View style={styles.contentContainer}>
-          <Animated.Text
-            style={styles.title}
-            entering={FadeInDown.duration(400).springify()}
-          >
-            WallPie
-          </Animated.Text>
-          <Animated.Text
-            style={styles.punchLine}
-            entering={FadeInDown.duration(500).springify()}
-          >
-            Make a good choice with WallPie
-          </Animated.Text>
-          <Animated.View entering={FadeInDown.duration(600).springify()}>
-            <Pressable
-              style={styles.startBtn}
-              onPress={() => router.push("/home")}
+        <Animated.View entering={FadeInDown.duration(600)} style={{ flex: 1 }}>
+          <LinearGradient
+            colors={[
+              "rgba(255, 255, 255, 0)",
+              "rgba(255, 255, 255, .5)",
+              "white",
+              "white",
+            ]}
+            style={styles.gradient}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 0.8 }}
+          />
+          <View style={styles.contentContainer}>
+            <Animated.Text
+              style={styles.title}
+              entering={FadeInDown.duration(400).springify()}
             >
-              <Animated.Text style={styles.startText}>
-                Start Explore
-              </Animated.Text>
-            </Pressable>
-          </Animated.View>
-        </View>
-      </Animated.View>
-    </View>
+              WallPie
+            </Animated.Text>
+            <Animated.Text
+              style={styles.punchLine}
+              entering={FadeInDown.duration(500).springify()}
+            >
+              Make a good choice with WallPie
+            </Animated.Text>
+            <Animated.View entering={FadeInDown.duration(600).springify()}>
+              <Pressable
+                style={styles.startBtn}
+                onPress={() => router.push("/home")}
+              >
+                <Animated.Text style={styles.startText}>
+                  Start Explore
+                </Animated.Text>
+              </Pressable>
+            </Animated.View>
+          </View>
+        </Animated.View>
+      </View>
+    </>
   );
 };
 

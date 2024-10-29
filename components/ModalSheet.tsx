@@ -39,68 +39,70 @@ const ModalSheet = React.forwardRef<BottomSheetModal, BottomSheetInterface>(
     ref
   ) => {
     return (
-      <BottomSheetModal
-        ref={ref}
-        index={index}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        enablePanDownToClose={true}
-        backdropComponent={CustomeBackdrop}
-      >
-        <BottomSheetView style={styles.contentContainer}>
-          <View style={styles.content}>
-            <Text style={[styles.filterText, { fontWeight: 600 }]}>
-              Filters
-            </Text>
-            {Object.keys(sections).map((sectionName, index) => {
-              // @ts-ignore
-              let sectionView = sections[sectionName];
-              // @ts-ignore
-              let sectionData = data.filters[sectionName];
-              return (
-                <Animated.View
-                  entering={FadeInDown.delay(index * 100 + 100)
-                    .springify()
-                    .damping(11)}
-                  key={sectionName}
-                >
-                  <SectionView
-                    title={sectionName}
-                    content={sectionView({
-                      data: sectionData,
-                      filters,
-                      setFilters,
-                      filterName: sectionName,
-                    })}
-                  />
-                </Animated.View>
-              );
-            })}
+      <>
+        <BottomSheetModal
+          ref={ref}
+          index={index}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+          enablePanDownToClose={true}
+          backdropComponent={CustomeBackdrop}
+        >
+          <BottomSheetView style={styles.contentContainer}>
+            <View style={styles.content}>
+              <Text style={[styles.filterText, { fontWeight: 600 }]}>
+                Filters
+              </Text>
+              {Object.keys(sections).map((sectionName, index) => {
+                // @ts-ignore
+                let sectionView = sections[sectionName];
+                // @ts-ignore
+                let sectionData = data.filters[sectionName];
+                return (
+                  <Animated.View
+                    entering={FadeInDown.delay(index * 100 + 100)
+                      .springify()
+                      .damping(11)}
+                    key={sectionName}
+                  >
+                    <SectionView
+                      title={sectionName}
+                      content={sectionView({
+                        data: sectionData,
+                        filters,
+                        setFilters,
+                        filterName: sectionName,
+                      })}
+                    />
+                  </Animated.View>
+                );
+              })}
 
-            {/* actions */}
-            <Animated.View
-              style={styles.buttons}
-              entering={FadeInDown.delay(500).springify().damping(11)}
-            >
-              <Pressable style={styles.resetButton} onPress={onReset}>
-                <Text
-                  style={[
-                    styles.buttonText,
-                    { color: theme.colors.neutral(0.7) },
-                  ]}
-                >
-                  Reset
-                </Text>
-              </Pressable>
-              <Pressable style={styles.applyButton} onPress={onApply}>
-                <Text style={[styles.buttonText, { color: "white" }]}>
-                  Apply
-                </Text>
-              </Pressable>
-            </Animated.View>
-          </View>
-        </BottomSheetView>
-      </BottomSheetModal>
+              {/* actions */}
+              <Animated.View
+                style={styles.buttons}
+                entering={FadeInDown.delay(500).springify().damping(11)}
+              >
+                <Pressable style={styles.resetButton} onPress={onReset}>
+                  <Text
+                    style={[
+                      styles.buttonText,
+                      { color: theme.colors.neutral(0.7) },
+                    ]}
+                  >
+                    Reset
+                  </Text>
+                </Pressable>
+                <Pressable style={styles.applyButton} onPress={onApply}>
+                  <Text style={[styles.buttonText, { color: "white" }]}>
+                    Apply
+                  </Text>
+                </Pressable>
+              </Animated.View>
+            </View>
+          </BottomSheetView>
+        </BottomSheetModal>
+      </>
     );
   }
 );
@@ -138,15 +140,17 @@ const CustomeBackdrop = ({
     animatedContainerStyle,
   ];
   return (
-    // @ts-ignore
-    <Animated.View style={containerStyles}>
-      <BlurView
-        style={StyleSheet.absoluteFill}
-        tint="dark"
-        intensity={25}
-        experimentalBlurMethod="dimezisBlurView"
-      />
-    </Animated.View>
+    <>
+      {/* @ts-ignore */}
+      <Animated.View style={containerStyles}>
+        <BlurView
+          style={StyleSheet.absoluteFill}
+          tint="dark"
+          intensity={25}
+          experimentalBlurMethod="dimezisBlurView"
+        />
+      </Animated.View>
+    </>
   );
 };
 
@@ -159,8 +163,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
   },
   content: {
-    width: "100%",
-    // flex: 1,
+    // width: "100%",
+    flex: 1,
     // backgroundColor: "red",
     gap: 15,
     paddingVertical: 10,
@@ -173,6 +177,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     // flex: 1,
+    marginTop: 60,
     flexDirection: "row",
     alignItems: "center",
     gap: 10,

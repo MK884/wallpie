@@ -11,10 +11,12 @@ const SectionView = ({
   content: React.ReactNode;
 }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <View>{content}</View>
-    </View>
+    <>
+      <View style={styles.container}>
+        <Text style={styles.title}>{title}</Text>
+        <View>{content}</View>
+      </View>
+    </>
   );
 };
 
@@ -34,23 +36,29 @@ export const FilterRows = ({
     setFilters((prev) => ({ ...prev, [filterName]: item }));
   };
   return (
-    <View style={styles.flexRowWrap}>
-      {data &&
-        data.map((item) => {
-          let isActive = filters && filters[filterName] == item;
-          let backgroundColor = isActive ? theme.colors.neutral(0.7) : "white";
-          let color = isActive ? "white" : theme.colors.neutral(0.7);
-          return (
-            <Pressable
-              key={item}
-              style={[styles.outlineButton, { backgroundColor }]}
-              onPress={() => onSelecet(item)}
-            >
-              <Text style={[styles.outlineButtonText, { color }]}>{item}</Text>
-            </Pressable>
-          );
-        })}
-    </View>
+    <>
+      <View style={styles.flexRowWrap}>
+        {data &&
+          data.map((item) => {
+            let isActive = filters && filters[filterName] == item;
+            let backgroundColor = isActive
+              ? theme.colors.neutral(0.7)
+              : "white";
+            let color = isActive ? "white" : theme.colors.neutral(0.7);
+            return (
+              <Pressable
+                key={item}
+                style={[styles.outlineButton, { backgroundColor }]}
+                onPress={() => onSelecet(item)}
+              >
+                <Text style={[styles.outlineButtonText, { color }]}>
+                  {item}
+                </Text>
+              </Pressable>
+            );
+          })}
+      </View>
+    </>
   );
 };
 export const ColorFilters = ({
@@ -69,26 +77,28 @@ export const ColorFilters = ({
     setFilters((prev) => ({ ...prev, [filterName]: item }));
   };
   return (
-    <View style={styles.flexRowWrap}>
-      {data &&
-        data.map((item) => {
-          let isActive = filters && filters[filterName] == item;
-          //   let backgroundColor = isActive ? theme.colors.neutral(0.7) : "white";
-          //   let color = isActive ? "white" : theme.colors.neutral(0.7);
-          let borderColor = isActive ? theme.colors.neutral(0.7) : "white";
-          return (
-            <Pressable
-              key={item}
-              //   style={[styles.outlineButton, { backgroundColor }]}
-              onPress={() => onSelecet(item)}
-            >
-              <View style={[styles.colorWrapper, { borderColor }]}>
-                <View style={[styles.color, { backgroundColor: item }]} />
-              </View>
-            </Pressable>
-          );
-        })}
-    </View>
+    <>
+      <View style={styles.flexRowWrap}>
+        {data &&
+          data.map((item) => {
+            let isActive = filters && filters[filterName] == item;
+            //   let backgroundColor = isActive ? theme.colors.neutral(0.7) : "white";
+            //   let color = isActive ? "white" : theme.colors.neutral(0.7);
+            let borderColor = isActive ? theme.colors.neutral(0.7) : "white";
+            return (
+              <Pressable
+                key={item}
+                //   style={[styles.outlineButton, { backgroundColor }]}
+                onPress={() => onSelecet(item)}
+              >
+                <View style={[styles.colorWrapper, { borderColor }]}>
+                  <View style={[styles.color, { backgroundColor: item }]} />
+                </View>
+              </Pressable>
+            );
+          })}
+      </View>
+    </>
   );
 };
 

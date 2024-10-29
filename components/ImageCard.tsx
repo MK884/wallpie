@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet } from "react-native";
+import { Platform, Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { Image } from "expo-image";
 import { getImageSize, wp } from "@/helpers";
@@ -29,20 +29,22 @@ const ImageCard = ({
   };
 
   return (
-    <Pressable
-      style={[styles.wrapper, !isLastColumn() && styles.spacing]}
-      onPress={() =>
-        router.push({ pathname: "/home/ImageScreen", params: { ...item } })
-      }
-    >
-      <Image
-        style={[styles.image, getSize()]}
-        source={{
-          uri: item?.previewURL,
-        }}
-        transition={100}
-      />
-    </Pressable>
+    <>
+      <Pressable
+        style={[styles.wrapper, !isLastColumn() && styles.spacing]}
+        onPress={() =>
+          router.push({ pathname: "/home/ImageScreen", params: { ...item } })
+        }
+      >
+        <Image
+          style={[styles.image, getSize()]}
+          source={{
+            uri: item?.previewURL,
+          }}
+          transition={100}
+        />
+      </Pressable>
+    </>
   );
 };
 
@@ -56,10 +58,10 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.xl,
     borderCurve: "continuous",
     overflow: "hidden",
-    marginBottom: wp(2),
+    marginBottom: wp(Platform.OS === "web" ? 1 : 2),
   },
   spacing: {
-    marginRight: wp(2),
+    marginRight: wp(Platform.OS === "web" ? 1 : 2),
   },
 });
 

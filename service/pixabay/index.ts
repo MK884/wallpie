@@ -1,9 +1,11 @@
 import axios, { AxiosError } from "axios";
-import { privateAxios } from "../api";
 
-const apiUrl = `https://pixabay.com/api/?key=${process.env.EXPO_PUBLIC_PIXABAY_KEY}`;
+const apiUrl = `${process.env.EXPO_PUBLIC_PIXABAY_BASE_URL}/?key=${process.env.EXPO_PUBLIC_PIXABAY_KEY}`;
 
 const formateURL = (params: unknown) => {
+  if (!apiUrl) {
+    throw new Error("mismatch uri");
+  }
   let uri = apiUrl + "&per_page=25&safesearch=true&editors_choice=true";
 
   if (!params) return uri;
