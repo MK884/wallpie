@@ -19,6 +19,7 @@ import { Categories, ImageGrid, ModalSheet } from "@/components";
 import { getImages } from "@/service";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Link, useRouter } from "expo-router";
+import { Image } from "expo-image";
 
 var page = 1;
 const Home = () => {
@@ -190,6 +191,14 @@ const Home = () => {
         <View style={styles.header}>
           <Pressable onPress={scrollToTop}>
             <Text style={[styles.title, { fontWeight: 600 }]}>WallPie</Text>
+            {/* <Image
+              transition={100}
+              source={require("@/assets/images/logo.png")}
+              style={{
+                height: hp(6),
+                width: wp(10),
+              }}
+            /> */}
           </Pressable>
           {isWeb && (
             <View style={styles.socialIcons}>
