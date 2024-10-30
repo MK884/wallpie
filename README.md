@@ -15,7 +15,11 @@
 - **Image Downloads**: Easily download images to your device.
 - **Cross-Platform Compatibility**: Available on both mobile and web.
 
-## Demo
+## Web Demo
+
+Go to https://wallpie.vercel.app
+
+## App Demo
 
 <div  style="display: flex; flex-direction: 'row';">
 <img src="demo/wlcome.gif" width="30%"/>
