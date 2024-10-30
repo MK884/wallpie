@@ -10,6 +10,7 @@ import React from "react";
 import {
   ActivityIndicator,
   Alert,
+  Dimensions,
   Platform,
   Pressable,
   StyleSheet,
@@ -24,6 +25,7 @@ import Toast, {
 
 const ImageScreen = () => {
   const router = useRouter();
+  const { width: DeviceWidth } = Dimensions.get("window");
 
   const item = useLocalSearchParams();
 
@@ -47,12 +49,14 @@ const ImageScreen = () => {
     if (aspectRatio < 1) {
       // portrait
       calculatedWidth = calculatedHeight * aspectRatio;
-      calculatedHeight = Platform.OS === "web" ? hp(90) : calculatedHeight;
+      // calculatedHeight =
+      //   Platform.OS === "web" && DeviceWidth > 900 ? hp(90) : calculatedHeight;
     }
 
     return {
       height: calculatedHeight,
       width: calculatedWidth,
+      maxHeight: Platform.OS === "web" ? hp(90) : calculatedHeight,
     };
   };
 
