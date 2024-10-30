@@ -46,7 +46,7 @@ const index = () => {
             <Animated.View entering={FadeInDown.duration(600).springify()}>
               <Pressable
                 style={styles.startBtn}
-                onPress={() => router.push("/home")}
+                onPress={() => router.push("/(home)/")}
               >
                 <Animated.Text style={styles.startText}>
                   Start Explore

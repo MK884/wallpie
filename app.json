@@ -24,11 +24,12 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "name": "wallpie - Photo's Library",
+      "description": "WallPie is the go-to app for discovering and managing images, whether you're on the go with your mobile device or browsing from a web platform.",
+      "shortName": "WallPie"
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
     }

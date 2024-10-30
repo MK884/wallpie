@@ -33,7 +33,7 @@ const ImageCard = ({
       <Pressable
         style={[styles.wrapper, !isLastColumn() && styles.spacing]}
         onPress={() =>
-          router.push({ pathname: "/home/ImageScreen", params: { ...item } })
+          router.push({ pathname: "/(home)/ImageScreen", params: { ...item } })
         }
       >
         <Image

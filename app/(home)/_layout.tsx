@@ -2,9 +2,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Stack } from "expo-router";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-<head>
-  <title>Wallpie</title>
-</head>;
+
 const RooteLayout = () => {
   return (
     <>
@@ -15,24 +13,18 @@ const RooteLayout = () => {
               name="index"
               options={{
                 headerShown: false,
-                title: "Wallpie",
+                title: "wallpie",
               }}
             />
             <Stack.Screen
-              name="(home)"
-              options={{
-                headerShown: false,
-                title: "Wallpie",
-              }}
-            />
-            {/* <Stack.Screen
-              name="home/ImageScreen"
+              name="ImageScreen"
               options={{
                 headerShown: false,
                 presentation: "transparentModal",
                 animation: "fade",
+                title: "Wallpie - image screen",
               }}
-            /> */}
+            />
           </Stack>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
